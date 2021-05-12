@@ -1,0 +1,14 @@
+
+<div class="card" style="width: 18rem;">
+    <img [src]="todo.image" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{todo.todoName}}</h5>
+      <p>Description of this todo</p>
+      <span class="card-text">{{todo.todoDay| date}}</span>
+    </div>
+  </div>
+<p *ngIf="todo">
+
+    {{todo | json}}
+</p>
+<p *ngIf="!todo">{{error}}</p>
