@@ -7,8 +7,5 @@
       <span class="card-text">{{todo.todoDay| date}}</span>
     </div>
   </div>
-<p *ngIf="todo">
-
-    {{todo | json}}
-</p>
 <p *ngIf="!todo">{{error}}</p>
+<button class="btn btn-primary m-2" routerLink='/todos'>Retour</button>

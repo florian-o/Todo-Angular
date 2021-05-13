@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TodoService } from '../services/todo.services';
-import { TodoComponent } from '../todo/todo.component';
+import { TodoService } from '../../services/todo.services';
 
 @Component({
   selector: 'app-single-todo',

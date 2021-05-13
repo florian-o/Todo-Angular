@@ -1,34 +1,45 @@
 
 <h2 class="m-2">liste des taches</h2>
 <div class="row justify-content-center m-3">
-    <div class="col-9">
-        <ul class="list-group">
+    <div class="col-lg-9">
+      
+       <p *ngIf="errorMsg.length > 1; else noData">{{errorMsg}}</p>
+        <ng-template #noData>
+        <ul class="list-group">            
             <li class="list-group-item border border-secondary shadow p-3 mb-2 bg-body rounded" *ngFor="let todo of todos;let i = index">       
                     <div class="row " [ngClass]="{inprogress:todo.todoStatus,finish:!todo.todoStatus}">
-                        <div class="col-3 d-flex justify-content-center align-items-center ">
-                            <span>{{todo.todoName}} - {{todo.todoDay | date:'dd/MM/yyyy'}}</span>   
-                        
-                        </div>
-                        <div class="col-5 ">
+                        <div class="col-6 mx-auto">
                             <a [href]="todo.image">
-                                <img [src]="todo.image" class="float-right" />
+                                <img class="img-fluid" [src]="todo.image"  />
                             </a>   
-                        </div>
-                        <div class="col-4 d-flex justify-content-between align-items-end">
-                            <button type="button" class="btn btn-primary" [disabled]="todo.todoStatus"
+                            <div class="text-primary">
+                                <span>{{todo.todoName}} - {{todo.todoDay | date:'dd/MM/yyyy'}}</span>                           
+                            </div>
+                        </div>                      
+                        <div class="col-4 my-auto">
+                            <button type="button" class="btn btn-primary m-1" [disabled]="todo.todoStatus"
                             (click)="onChangeStatus(i)"
                             >En Cours</button>
-                            <button type="button" class="btn btn-success" [disabled]="!todo.todoStatus"
+                            <button type="button" class="btn btn-success m-1" [disabled]="!todo.todoStatus"
                             (click)="onChangeStatus(i)"
-                            >Terminé</button>                           
+                            >Terminé</button>   
+                            <button class="btn btn-primary m-1" (click)="onView(i)">En Savoir Plus</button>                                                                
                         </div>
-                        <button class="btn btn-bloc" (click)="onChangeIsModif(i)">Modifier</button>
-                        <div class="" *ngIf="todo.isModif">
-                            <input class="form-control" [(ngModel)]="todo.todoName"  />
-                        </div>
-                        
-                    </div>                            
+                        <div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <button class="btn btn-outline-primary m-2" type="button" (click)="onChangeIsModif(i)">Modifier</button>
+                                </div>
+                                <div class="col-6">
+                                    <div class="" *ngIf="todo.isModif">
+                                        <input class="form-control m-2" [(ngModel)]="todo.todoName"  />
+                                    </div>                        
+                                </div>
+                            </div>                         
+                        </div>                        
+                    </div>       
             </li>             
           </ul>
+        </ng-template>     
     </div>    
 </div>
