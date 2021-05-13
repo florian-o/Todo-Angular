@@ -13,17 +13,18 @@ export class AddUsersComponent implements OnInit {
   ngOnInit(): void {
     this.initUseForm()
   }
-  initUseForm(){
+  initUseForm():void{
     this.userform = this.formbuilder.group({
     firstname:this.formbuilder.control(""),
     lastname:this.formbuilder.control(""),
     email:this.formbuilder.control(""),
     datebirth:this.formbuilder.control(""),
-
-
- 
-    
-
+    address:this.formbuilder.group({
+      street:this.formbuilder.control(""),
+      state:this.formbuilder.control(""),
+      city:this.formbuilder.control(""),
+      zip:this.formbuilder.control("")
+    })    
     });
     
   }
