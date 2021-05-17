@@ -6,7 +6,7 @@
        <p *ngIf="errorMsg.length > 1; else noData">{{errorMsg}}</p>
         <ng-template #noData>
         <ul class="list-group">            
-            <li class="list-group-item border border-secondary shadow p-3 mb-2 bg-body rounded" *ngFor="let todo of todos;let i = index">       
+            <li class="list-group-item border border-secondary shadow p-3 mb-2 bg-body rounded" *ngFor="let todo of todos ;let i = index">       
                     <div class="row " [ngClass]="{inprogress:todo.todoStatus,finish:!todo.todoStatus}">
                         <div class="col-6 mx-auto">
                             <a [href]="todo.image">

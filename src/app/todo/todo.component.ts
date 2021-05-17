@@ -19,16 +19,18 @@ name:string = this.constructor.name;
 errorMsg:string="";
 todoSub:Subscription;
   
-constructor(private TodoServices:TodoService,private router:Router) { }
+constructor(private TodoServices:TodoService,private router:Router) {
+  
+ }
 
   ngOnInit(): void {
     //this.todos =this.TodoServices.todos;   
-  this.todoSub = this.TodoServices.todoSubject.subscribe(
-    (data:any[])=>{this.todos = data;console.log(data);
-    },
-    (err)=>{console.log(err);}    
-  )
-  this.TodoServices.emitTodos();
+    
+this.TodoServices.getAllTodo()
+ .subscribe(
+   (data) =>  {this.todos = data;console.log(data)}
+   )
+  
 };
   onChangeStatus(i:number){    
     this.TodoServices.onChangeStatus(i);  
@@ -40,6 +42,6 @@ constructor(private TodoServices:TodoService,private router:Router) { }
     this.router.navigate(["single-todo",id]);
   } 
   ngOnDestroy():void{
-    this.todoSub.unsubscribe();
+  this.TodoServices.todoSubject.unsubscribe();
   }
 }

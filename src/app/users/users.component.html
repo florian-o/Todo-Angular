@@ -1,2 +1,23 @@
-<p>users works!</p>
+
+
+{{users| json }}
+<div class="list-group" *ngFor="let user of users"> 
+    <a href="#" class="list-group-item list-group-item-action">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{user.firstaname}}-{{user.lastname}}</h5>
+        <span class="text-danger d-block">{{user.email}}</span>
+      </div>
+      <p class="mb-1">{{user.dateBirth | date}}</p>
+     <p>Addresse</p>
+     <div *ngFor="let item of user.address">
+        <span>{{item.city}}</span>
+     </div>
+         
+   
+    </a>   
+  </div>
+
+
 <button class="btn btn-primary" routerLink="/add-user">Ajouter un utilisateur</button>
+
+

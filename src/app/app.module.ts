@@ -12,7 +12,7 @@ import { AddTodoComponent } from './todo/add-todo/add-todo.component';
 import { SingleTodoComponent } from "./todo/single-todo/single-todo.component";
 import { UsersComponent } from './users/users.component';
 import { AddUsersComponent } from './users/add-user/add-users.component';
-
+import { HttpClientModule } from "@angular/common/http";
 export const ROUTES:Routes=[
   {path:'home',component:HomeComponent},
   {path:'todos',component:TodoComponent},
@@ -23,12 +23,9 @@ export const ROUTES:Routes=[
   {path:'users',component:UsersComponent},  
   {path:'',component:HomeComponent},
   {path:'**',pathMatch:'full',redirectTo:'not-found'}
-
-
 ];
 
 @NgModule({
-
   declarations:[
     AppComponent,
     HeaderComponent,
@@ -38,14 +35,14 @@ export const ROUTES:Routes=[
     SingleTodoComponent,
     AddTodoComponent,
     UsersComponent,
-    AddUsersComponent,
-   
+    AddUsersComponent,   
   ],
   imports:[
     BrowserModule,    
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(ROUTES)
+    RouterModule.forRoot(ROUTES),
+    HttpClientModule,
   ],
   providers:[TodoService],
   bootstrap: [AppComponent]

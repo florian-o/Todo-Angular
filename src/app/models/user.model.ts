@@ -6,7 +6,7 @@ export class User {
         public lastname:string,
         public email:string,
         public dateBirth:Date,
-        public Address:Address,
+        public address:Address,
      ) {
         
     }
