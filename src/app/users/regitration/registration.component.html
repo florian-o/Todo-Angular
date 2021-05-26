@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="p-5 mx-auto">
+        <div class="card border-secondary">
+            <div class="card-header">            
+              <h4 class="text-primary"><i class="fas fa-user-plus me-1"></i>S'enregistrer</h4>
+            </div>
+            <div class="card-body">                           
+              <form  [formGroup]="userService.formModel" (submit)="onSubmit()"autocomplete="off">
+                  <div class="row">
+                      <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label">Nom</label>
+                            <input type="text" class="form-control" formControlName="firstname" />
+                            <label class="text-danger" *ngIf="userService.formModel.get('firstname').touched && userService.formModel.get('firstname').errors?.required">Le champ doit etre renseigner</label>               
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Prenom</label>
+                            <input type="text" class="form-control" formControlName="lastname"                           
+                            />               
+                            <label for="" class="text-danger"  *ngIf="userService.formModel.get('lastname').touched && userService.formModel.get('lastname').errors?.required">Le champ doit etre renseigner</label>
+
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name=""  formControlName="email"                            
+                            />             
+                            <label for="" class="text-danger" *ngIf="userService.formModel.get('email').touched && userService.formModel.get('email').errors?.email">Adresse mail requis</label>
+                            <label class="text-danger" 
+                            *ngIf="userService.formModel.get('email').touched && userService.formModel.get('email').errors?.required"
+                            >Le champ doit etre renseigner</label>
+                          </div>                        
+                                            
+                      </div>
+                      <div class="col-6" formGroupName="Passwords">
+                 <div class="mb-3">
+                      <label class="form-label">Mot de passe</label>
+                      <input type="password" class="form-control" formControlName="password"                      
+                      />
+                      <label class="text-danger"
+                      *ngIf="userService.formModel.get('Passwords.password').touched && userService.formModel.get('Passwords.password').errors?.required"
+                      >Le Champ doit etre renseigner</label>
+                      <label class="text-danger"
+                      *ngIf="userService.formModel.get('Passwords.password').touched && userService.formModel.get('Passwords.password').errors?.minlength"
+                      >minimun 6 caracteres requis</label>              
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Confirmer Mot de Passe</label>
+                    <input type="password" class="form-control" formControlName="ConfirmPassword"/> 
+                    <label class="text-danger"
+                    *ngIf="userService.formModel.get('Passwords.ConfirmPassword').touched && userService.formModel.get('Passwords.ConfirmPassword').errors?.required"
+                    >Le Champ doit etre renseigner</label>
+                    <label class="text-danger"
+                    *ngIf="userService.formModel.get('Passwords.ConfirmPassword').touched && userService.formModel.get('Passwords.ConfirmPassword').errors?.passwordMissmatch"
+                    >Le champ ne correspond pas au mot de passe</label>
+                   
+                </div>             
+                      </div>  
+                    </div> 
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success me-2" [disabled]="!userService.formModel.valid" >S'enregistrer</button>
+                        <a href="#" class="btn btn-primary" >Retour</a>
+                    </div>                   
+                </form>          
+            </div>
+        </div>
+    </div>   
+</div>

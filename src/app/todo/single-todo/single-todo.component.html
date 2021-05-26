@@ -1,11 +1,23 @@
 
-<div class="card" style="width: 18rem;">
-    <img [src]="todo.image" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">{{todo.todoName}}</h5>
-      <p>Description of this todo</p>
-      <span class="card-text">{{todo.todoDay| date}}</span>
-    </div>
+<div class="card me-auto d-flex justify-content-center">
+  <div class="card-header">    
+   <h3 class="text-primary">{{todo.todoName}}</h3> 
   </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <img [src]="todo.image" class="card-img-top" alt={{todo.todoName}}>
+      </div>
+      <div class="col-6">
+        <div class="text-end">
+          <span class="badge " [ngClass]="todo.todoStatus?'bg-primary':'bg-danger'">{{todo.todoStatus?"Terminée":"Tache en cours"}}</span>
+        </div>        
+        <p>{{todo.description}}</p>
+        <span class="card-text">{{todo.todoDay | date}}</span>
+        <p class="text-danger">derniere modification le {{todo.updatedAt | date}} a {{todo.updatedAt | date:"hh:ss"}}</p>
+      </div>
+    </div>  
+    <button class="btn btn-primary m-2" routerLink='/todos'>Retour</button>
+  </div>
+</div>
 <p *ngIf="!todo">{{error}}</p>
-<button class="btn btn-primary m-2" routerLink='/todos'>Retour</button>

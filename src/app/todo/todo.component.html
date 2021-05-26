@@ -1,5 +1,9 @@
 
-<h2 class="m-2">liste des taches</h2>
+<div class="text-center bg-secondary border border-dark rounded m-4 p-3
+">
+    <h2 class="m-2 text-light">Liste des taches</h2>
+</div>
+
 <div class="row justify-content-center m-3">
     <div class="col-lg-9">
       
@@ -27,17 +31,38 @@
                         </div>
                         <div>
                             <div class="row">
-                                <div class="col-4">
-                                    <button class="btn btn-outline-primary m-2" type="button" (click)="onChangeIsModif(i)">Modifier</button>
+                                <div class="col-4">                         
+                                   <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Modifier
+                                </button>                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modification</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="">
+                                                <input class="form-control m-2" (change)="onChangeIsModif(i)" [(ngModel)]="todo.todoName"  />
+                                            </div>                        
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+                                        <button type="button" (click)="todo.isModif=!todo.isModif;" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Sauvegarder</button>
+                                        </div>
+                                    </div>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="" *ngIf="todo.isModif">
-                                        <input class="form-control m-2" [(ngModel)]="todo.todoName"  />
-                                    </div>                        
-                                </div>
+                                    <button type="button" class="btn btn-danger m-1" 
+                                    (click)="onDelete(todo.idTodo)"
+                                    >Supprimer</button>   
+                                </div>                     
                             </div>                         
                         </div>                        
-                    </div>       
+                    </div>
             </li>             
           </ul>
         </ng-template>     

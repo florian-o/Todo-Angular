@@ -8,11 +8,23 @@
           <li class="nav-item"><a class="navbar-brand text-light nav-link" >Angular-TodoList</a></li>
           <li class="nav-item"><a class="text-light me-2 nav-link" routerLink="home">Accueil</a></li>
           <li class="nav-item"><a class="text-light nav-link" routerLink="todos">Taches</a></li>
-            <li class="nav-item"><a class="text-light nav-link" routerLink="add-todo">Ajouter une Taches</a></li>
-            <li class="nav-item"><a class="text-light nav-link" routerLink="users">Users</a></li>
-        </ul>    
-      </div>          
-        <span class="text-danger">connecter depuis {{secondes}}s</span>           
+            <li class="nav-item"><a class="text-light nav-link" routerLink="add-todo">Ajouter une Taches</a></li>            
+        </ul>  
+        <ul class="d-flex" *ngIf="userData==null; else elseBlock">         
+          <li class="nav-item"><a class="text-light nav-link " routerLink="user/registration">S'enregistrer</a></li>  
+          <li class="nav-item"><a class="text-light nav-link " routerLink="user/login">Se Connecter</a></li>  
+         
+        </ul>
+        <ng-template #elseBlock>
+          <ul class="d-flex">
+            <li class="nav-item"><span class="text-light nav-link"><i class="far fa-user me-1"></i>{{userData.firstname}}</span>
+            <li class="nav-item" (click)="onLogout()"><a class="text-danger nav-link">Deconexion<i class="fas fa-sign-out-alt ms-1"></i></a></li>
+          </ul>
+        </ng-template>  
+      
+      </div> 
+             
+        <!--<span class="text-danger">connecter depuis {{secondes}}s</span>  -->    
     </div>        
      <div>      
     

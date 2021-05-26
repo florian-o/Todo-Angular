@@ -1,6 +1,8 @@
-import { Component, Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injectable, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import { Todo } from '../models/todo.models';
 import { TodoService } from '../services/todo.services';
 
 @Injectable({
@@ -14,34 +16,46 @@ import { TodoService } from '../services/todo.services';
 })
 export class TodoComponent implements OnInit,OnDestroy {
 
-todos:any[];
+todos:Todo[];
 name:string = this.constructor.name;
 errorMsg:string="";
 todoSub:Subscription;
+
+@ViewChild('closebutton') closebutton
   
-constructor(private TodoServices:TodoService,private router:Router) {
-  
+constructor(private TodoServices:TodoService,private router:Router,private toast:ToastrService) {
+
  }
 
   ngOnInit(): void {
-    //this.todos =this.TodoServices.todos;   
-    
-this.TodoServices.getAllTodo()
- .subscribe(
-   (data) =>  {this.todos = data;console.log(data)}
-   )
-  
-};
-  onChangeStatus(i:number){    
+        
+ this.todoSub = this.TodoServices.todoSubject.subscribe(
+ (value:any[])=>{
+   this.todos = value as Todo[];
+  },
+  (err) => console.log(err),
+)
+this.TodoServices.emitTodos();  
+}
+
+  onChangeStatus(i:number){     
     this.TodoServices.onChangeStatus(i);  
   }
   onChangeIsModif(i:number){
+    //this.closebutton.nativeElement.click();
+    this.toast.success('Modification effectuer')
     this.TodoServices.onChangeIsModif(i);
+    
   }
   onView(id:number){        
     this.router.navigate(["single-todo",id]);
   } 
+  onDelete(id:number){
+    this.toast.show('are you sure?','flfmf');
+    console.log(id);    
+    this.TodoServices.onDelete(id);   
+  }
   ngOnDestroy():void{
-  this.TodoServices.todoSubject.unsubscribe();
+   this.todoSub.unsubscribe();
   }
 }

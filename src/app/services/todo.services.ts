@@ -1,8 +1,9 @@
 import { Injectable, OnDestroy, OnInit } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { Todo } from "../models/todo.models";
-import { HttpClient } from "@angular/common/http";
-import { emit } from "process";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+
+
 
 @Injectable()
 
@@ -11,56 +12,98 @@ export class TodoService implements OnInit,OnDestroy{
   todos:Todo[];  
   todoSubject=new Subject<Todo[]>();
 
-  readonly baseUrl = 'https://localhost:44322/api/Todo'
-constructor(private http:HttpClient){}
+  tokenHeader = new HttpHeaders({'Authorization':'Bearer '+localStorage.getItem('token')})
+
+
+  readonly baseUrl = 'https://localhost:44322/api/Todo';
+  
+constructor(private http:HttpClient){
+  this.getAllTodo();
+}
 
 ngOnInit(){
 
+  
 }
 
-
-    emitTodos(){
+  refreshList():void{
+    this.getAllTodo();
+  }
+    emitTodos(){ 
       this.todoSubject.next(this.todos);
     }
 
     onChangeStatus(i:number):void{    
            this.todos[i].todoStatus = !this.todos[i].todoStatus;
-           this.emitTodos();    
-    }
+           this.http.put(this.baseUrl, this.todos[i]).subscribe(
+            ()=> { 
+              this.emitTodos();  
+            },
+            (err) => { console.log("erreur :" + err);
+            },
+            ()=> console.log("Data recuperer"), 
+          );    
+          this.refreshList();     
+    } 
+
     onChangeIsModif(i:number):void{
       this.todos[i].isModif = !this.todos[i].isModif;
-      this.emitTodos();
-    }
+      this.http.put(this.baseUrl, this.todos[i]).subscribe(
+          ()=> { 
+            this.emitTodos();  
+          },
+          (err) => { console.log("erreur :" + err);
+          },
+          ()=> console.log("Data recuperer"), 
+        );    
+        this.refreshList(); 
+   }
+
     getTodo(index:number):any{
       if (this.todos[index]) {
         return this.todos[index];
       }
     return false;
     }
-    saveTodo(todo:Todo):void{
-    //this.todos.unshift(todo);
-    this.http.post<any>(this.baseUrl,todo)
+
+    saveTodo(todo:Todo):void{  
+    this.http.post<any>(this.baseUrl,todo,{headers:this.tokenHeader})
     .subscribe(
       (resp) => {
        this.todos = resp;
         this.emitTodos();},
       (err) =>console.log("erreur" + err)      
     )
-   
-    //this.todoSubject.next(this.todos);
+    this.refreshList();
+  }
+
+    onDelete(id:number){
+      this.http.delete(this.baseUrl+"/"+id)   
+        .subscribe(
+        () => {         
+          console.log(id);          
+           this.emitTodos();},
+          (err)=> console.log(err),   
+      )
+      this.refreshList();
     }
-    getAllTodo():any{
-       this.http.get<any[]>(this.baseUrl)
-       .subscribe(
-        (data:any) =>{
-          console.log(data);          
-           this.todos = data;
-           this.emitTodos();
-        }        
-       )  
-      // this.emitTodos();   
+
+    getAllTodo():void{
+        this.http.get<Todo[]>(this.baseUrl)
+        .subscribe(
+          (todos:Todo[])=> {
+            console.log();
+            
+            this.todos = todos as Todo[];
+            this.emitTodos();
+          },
+          (err) => { console.log("erreur :" + err);
+          },
+          ()=> console.log("Data recuperer"), 
+        ); 
     }
+
    ngOnDestroy(){
-    this.todoSubject.unsubscribe();
+   this.todoSubject.unsubscribe();
    }
 }
