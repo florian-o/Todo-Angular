@@ -66,5 +66,9 @@ login(form){
   )
 }
 
+getProfile(){
+  return this.http.get(this.BaseUrl+"/UserProfile")
+}
+
 
 }

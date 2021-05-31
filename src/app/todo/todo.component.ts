@@ -31,7 +31,7 @@ constructor(private TodoServices:TodoService,private router:Router,private toast
         
  this.todoSub = this.TodoServices.todoSubject.subscribe(
  (value:any[])=>{
-   this.todos = value as Todo[];
+   this.todos = value;
   },
   (err) => console.log(err),
 )
@@ -41,8 +41,7 @@ this.TodoServices.emitTodos();
   onChangeStatus(i:number){     
     this.TodoServices.onChangeStatus(i);  
   }
-  onChangeIsModif(i:number){
-    //this.closebutton.nativeElement.click();
+  onChangeIsModif(i:number){    
     this.toast.success('Modification effectuer')
     this.TodoServices.onChangeIsModif(i);
     
@@ -50,10 +49,9 @@ this.TodoServices.emitTodos();
   onView(id:number){        
     this.router.navigate(["single-todo",id]);
   } 
-  onDelete(id:number){
-    this.toast.show('are you sure?','flfmf');
-    console.log(id);    
-    this.TodoServices.onDelete(id);   
+  onDelete(id:number){  
+    this.TodoServices.onDelete(id); 
+    this.toast.info('tache supprimer');  
   }
   ngOnDestroy():void{
    this.todoSub.unsubscribe();

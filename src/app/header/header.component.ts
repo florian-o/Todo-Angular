@@ -12,32 +12,24 @@ import { UsersService } from '../services/users.service';
 export class HeaderComponent implements OnInit ,OnDestroy {
 
 
-  nbPairesSub:Subscription 
-  secondes:number
   user:Subscription
   userData;
 
   constructor(private userservice:UsersService,private router:Router) { 
-   
+ 
   }
 
-  ngOnInit(): void {
-      const secondesObs = interval(1000);
+  ngOnInit(): void {     
+   
       
-        this.nbPairesSub = secondesObs.subscribe(
-          (val:number)=>this.secondes = val,
-          (finish)=>{ console.log(finish+"ok")},    
-        );
-        
-        this.user = this.userservice.userSubject.subscribe(
-          (res:any)=> { this.userData = res;} 
-        )
-      
-      
+        if(localStorage.getItem('token')){
+          this.userData = this.userservice.getProfile().subscribe(
+          (userData:any)=>{this.userData=userData;}       
+          )      
+        }
      
     }    
-     ngOnDestroy() {
-      this.nbPairesSub.unsubscribe();   
+     ngOnDestroy() {      
       this.user.unsubscribe();
     }
     onLogout(){    

@@ -22,8 +22,7 @@ constructor(private http:HttpClient){
 }
 
 ngOnInit(){
-
-  
+ 
 }
 
   refreshList():void{
@@ -48,7 +47,7 @@ ngOnInit(){
 
     onChangeIsModif(i:number):void{
       this.todos[i].isModif = !this.todos[i].isModif;
-      this.http.put(this.baseUrl, this.todos[i]).subscribe(
+      this.http.put(this.baseUrl, this.todos[i],{headers:this.tokenHeader}).subscribe(
           ()=> { 
             this.emitTodos();  
           },
@@ -78,10 +77,12 @@ ngOnInit(){
   }
 
     onDelete(id:number){
-      this.http.delete(this.baseUrl+"/"+id)   
+      this.http.delete(this.baseUrl+"/"+id,{headers:this.tokenHeader})   
         .subscribe(
         () => {         
-          console.log(id);          
+          this.todos = this.todos.filter(todo => todo.todoId != id);
+          console.log(id);
+                   
            this.emitTodos();},
           (err)=> console.log(err),   
       )
@@ -89,10 +90,10 @@ ngOnInit(){
     }
 
     getAllTodo():void{
-        this.http.get<Todo[]>(this.baseUrl)
+        this.http.get<Todo[]>(this.baseUrl,{headers:this.tokenHeader})
         .subscribe(
           (todos:Todo[])=> {
-            console.log();
+            console.log(todos);
             
             this.todos = todos as Todo[];
             this.emitTodos();

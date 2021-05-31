@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { ReactiveFormsModule, FormGroup, FormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from './header/header.component';
@@ -11,15 +11,22 @@ import { RouterModule, Routes } from "@angular/router";
 import { AddTodoComponent } from './todo/add-todo/add-todo.component';
 import { SingleTodoComponent } from "./todo/single-todo/single-todo.component";
 import { AddUsersComponent } from './users/regitration/registration.component';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr';
 import { LoginComponent } from './users/login/login.component';
 import { UsersComponent } from "./users/users.component";
+import { ProfileComponent } from "./users/profile/profile.component";
+
+import localeFr from '@angular/common/locales/fr';
 import { AuthGuard } from "./auth/auth.guard";
+import { AuthInterceptor } from "./auth/auth.intirceptor";
+import { UsersService } from "./services/users.service";
+import { AppRoutingModule } from './app-routing.module';
+
+
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeFr, 'fr-FR');
@@ -34,10 +41,13 @@ export const ROUTES:Routes=[
   {path:'user',component:UsersComponent,
   children:[
     {path:'registration',component:AddUsersComponent},
-    {path:'login',component:LoginComponent},  
+    {path:'login',component:LoginComponent},
+    {path:'profile',component:ProfileComponent},
+
+
   ]
 },
-  {path:'',redirectTo:'user/registration',pathMatch:'full'},
+  {path:'',redirectTo:'home',pathMatch:'full'},
   {path:'**',component:NotFoundComponent}
 ];
 
@@ -53,6 +63,8 @@ export const ROUTES:Routes=[
     LoginComponent, 
     UsersComponent,
     AddUsersComponent,
+    ProfileComponent
+
    
   ],
   imports:[
@@ -65,9 +77,14 @@ export const ROUTES:Routes=[
     ToastrModule.forRoot({
       progressBar:true,
     }),
+    AppRoutingModule,
   ],
   providers:[TodoService,
-  {provide: LOCALE_ID, useValue: 'fr-FR' }],
+    [UsersService,
+  {provide: HTTP_INTERCEPTORS,
+    useClass:AuthInterceptor, 
+    multi:true, 
+}]],
   bootstrap: [AppComponent]
 })
 
